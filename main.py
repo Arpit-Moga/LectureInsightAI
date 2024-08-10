@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+from dotenv import load_dotenv
+import os
 import sqlite3 
 
+load_dotenv()
+
 app = Flask(__name__)
-app.secret_key = 'super secret key'
+app.secret_key = os.getenv("FLASK_API_KEY")
 
 def get_db_connection():
     conn = sqlite3.connect('Database/database.db')
