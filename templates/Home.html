@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LectureInsightAI</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        
+        .main-content {
+            display: flex;
+            height: calc(100% - 50px);
+        }
+        
+        .left-panel {
+            width: 30%;
+            overflow-y: auto;
+            background-color: #f8f9fa; 
+            border-right: 1px solid #ddd;
+        }
+        
+        .right-panel {
+            width: 70%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .navbar {
+            margin-bottom: 1%; 
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('Home') }}">LectureInsightAI</a>
+        <div class="ml-auto">
+            <a href="{{ url_for('Register') }}" class="btn btn-outline-primary mr-2">Register</a>
+            <a href="{{ url_for('Login') }}" class="btn btn-outline-secondary">Login</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="left-panel">
+            <h4 class="p-3">Courses</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="#" class="nav-link">Course 1</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Course 2</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Course 3</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Course 4</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Course 5</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Course 6</a></li>
+            </ul>
+        </div>
+
+        <div class="right-panel">
+            <h4>User Statistics</h4>
+            <p>Your recent activity and performance metrics will be displayed here.</p>
+            <ul class="list-group">
+                <li class="list-group-item">Summaries Created: 10</li>
+                <li class="list-group-item">Questions Answered: 25</li>
+                <li class="list-group-item">Courses Enrolled: 4</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

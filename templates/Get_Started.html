@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started - LectureInsightAI</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100% - 56px);
+            text-align: center;
+        }
+
+        .content-box {
+            max-width: 600px;
+        }
+
+        .content-box h1 {
+            margin-bottom: 20px;
+        }
+
+        .content-box p {
+            margin-bottom: 30px;
+        }
+
+        .content-box .btn-primary {
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('Home') }}">LectureInsightAI</a>
+        <div class="ml-auto">
+            <a href="{{ url_for('Register') }}" class="btn btn-outline-primary mr-2">Register</a>
+            <a href="{{ url_for('Login') }}" class="btn btn-outline-secondary">Login</a>
+        </div>
+    </nav>
+
+    <div class="content">
+        <div class="content-box">
+            <h1>Welcome to LectureInsightAI</h1>
+            <p>Unlock the power of AI-driven learning by signing up today! With LectureInsightAI, you can easily summarize your class lectures, generate notes, and test your knowledge with personalized questions. Join us to enhance your learning experience.</p>
+            <a href="{{ url_for('Register') }}" class="btn btn-primary">Get Started</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
