@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from dotenv import load_dotenv
 import os
-import sqlite3 
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from bson.objectid import ObjectId
@@ -18,7 +17,7 @@ users_collection = db[os.getenv("MongoDB_USERS")]
 
 
 
-@app.route('/')                     # Shows the default page based on if user is logged in or not
+@app.route('/')                    
 def Home():
     if 'username' in session: return render_template('Home.html')
     else: return render_template('Get_Started.html')
