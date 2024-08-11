@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details - LectureInsightAI</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .course-header {
+            margin-bottom: 30px;
+        }
+
+        .course-content {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('Home') }}">LectureInsightAI</a>
+        <div class="ml-auto">
+            <a href="{{ url_for('Logout') }}" class="btn btn-outline-secondary">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="course-header">
+            <h2>{{ course.filename }}</h2>
+            <p><strong>Uploaded by:</strong> {{ course.user }}</p>
+            <p><strong>Uploaded on:</strong> {{ course.upload_date }}</p>
+        </div>
+
+        <div class="course-content">
+            <h4>Course Description</h4>
+            <p>This is the detailed view of the course. You can provide additional course-related content here.</p>
+
+            <h4>Summary</h4>
+            <p>The course summary or any notes associated with this course can be displayed here.</p>
+
+            <h4>Related Materials</h4>
+            <ul>
+                <li><a href="#">Related Material 1</a></li>
+                <li><a href="#">Related Material 2</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
