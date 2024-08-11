@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from bson import ObjectId
 from gridfs import GridFS
 import os
-
+import AI
 
 
 load_dotenv()
@@ -32,7 +32,7 @@ def Login():
         email = request.form['email']
         password = request.form['password']
 
-        user = users_collection.find_one({'email': email, 'password': password})
+        user = users_collection.find_one({'email': email})
 
         if user and check_password_hash(user['password'], password):
             session['username'] = user['username']
@@ -88,11 +88,11 @@ def Upload():
             {'username': username},
             {'$addToSet': {'courses': {'filename': file.filename, 'file_id': file_id}}}
         )
-    return redirect(url_for('Home'))
+    return redirect(url_for('view_course', course_id=file_id))
 
-@app.route('/Course/<course_id>', methods=['GET'])
+@app.route('/Course/<course_id>', methods=['GET','POST'])
 def view_course(course_id):
-    if 'username' not in session: return redirect(url_for('Get_Started'))
+    if 'username' not in session: return render_template('Get_Started.html')
 
     username = session['username']
     user = users_collection.find_one({'username': username})
@@ -104,7 +104,19 @@ def view_course(course_id):
         if not course: return jsonify({'error': 'Course not found or access denied'}), 404
 
         course_data = next(c for c in course['courses'] if c['file_id'] == ObjectId(course_id))
-        return render_template('Course_Detail.html', course=course_data)
+        note = users_collection.find_one({'username': username, 'courses.file_id': ObjectId(course_id)}, {'courses.$': 1})
+        existing_note = note['courses'][0].get('note', None) if note else None
+
+        if request.method == 'POST' and 'generate_note' in request.form: existing_note = AI.AI_summarizer(fs,course_data)
+
+        print(existing_note)
+
+        users_collection.update_one(
+            {'username': username, 'courses.file_id': ObjectId(course_id)},
+            {'$set': {'courses.$.note': existing_note}}
+        )
+
+        return render_template('Course_Detail.html', course=course_data , summary=existing_note)
     
     return jsonify({'error': 'User not found'}), 404
 
