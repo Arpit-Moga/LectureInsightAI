@@ -27,12 +27,15 @@ def Home():
 @app.route('/Register', methods=['GET', 'POST'])
 def Register():
     if request.method == 'POST':
+        if 'username' in session: session.pop('username', None)
+
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
 
-        if users_collection.find_one({'username': username}):
-            return render_template('Register.html')
+        if users_collection.find_one({'email': email}):
+            error = "Email already exists. Please try again."
+            return render_template('Register.html', error=error)
 
         users_collection.insert_one({'username': username, 'password': password , 'email': email})
 
@@ -45,8 +48,10 @@ def Register():
 @app.route('/Login', methods=['GET', 'POST'])
 def Login():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        if 'username' in session: session.pop('username', None)
+
+        email = request.form.get('email')
+        password = request.form.get('password')
 
         user = users_collection.find_one({'email': email, 'password': password})
 
@@ -54,9 +59,16 @@ def Login():
             session['username'] = user['username']
             return redirect(url_for('Home'))
         else:
-            return render_template('Login.html')
+            error = "Invalid email or password. Please try again."
+            return render_template('Login.html', error=error)
 
     return render_template('Login.html')
+
+
+@app.route('/Logout')
+def Logout():
+    session.pop('username', None)
+    return redirect(url_for('Home'))
 
 
 if __name__ == '__main__':
