@@ -10,30 +10,76 @@
             height: 100%;
             margin: 0;
         }
-        
-        .main-content {
-            display: flex;
-            height: calc(100% - 50px);
+
+        .navbar {
+            margin-bottom: 0;
+            z-index: 1000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
         }
-        
-        .left-panel {
-            width: 30%;
-            overflow-y: auto;
-            background-color: #f8f9fa; 
+
+        .sidebar {
+            height: calc(100% - 56px); /* Adjust height to be below the navbar */
+            width: 250px; /* Fixed width for sidebar */
+            position: fixed;
+            top: 56px; /* Positioning it below the navbar */
+            left: 0;
+            background-color: #f8f9fa;
             border-right: 1px solid #ddd;
+            overflow-y: auto;
+            transition: width 0s; /* Instant transition */
+            padding-top: 20px;
+            z-index: 900; /* Ensure the sidebar is behind the toggle button */
         }
-        
+
+        .sidebar.collapsed {
+            width: 0; /* Collapse the sidebar */
+        }
+
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 18px; /* Decreased font size */
+            color: #333;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            color: #000;
+        }
+
+        .toggle-btn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #e9ecef;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 4px;
+            position: relative;
+            top: 8%;
+            left: 260px; /* Positioning it just outside the sidebar */
+            z-index: 1001; 
+        }
+
+        .toggle-btn:hover {
+            background-color: #ddd;
+        }
+
         .right-panel {
-            width: 70%;
+            font-size: 120%;
+            margin-top: 5%;
+            margin-left: 20%; /* Fixed margin-left to maintain position */
             padding: 20px;
+            max-width: 1100px;
+            width: 100%;
             overflow-y: auto;
         }
 
-        .navbar {
-            margin-bottom: 1%; 
-        }
         .form-group {
-            margin-top: 50%;
+            margin-top: 90%;
         }
     </style>
 </head>
@@ -45,54 +91,56 @@
         </div>
     </nav>
 
-    <div class="main-content">
-        <div class="left-panel">
-            <h4 class="p-3">Courses</h4>
-            <ul id="course-list" class="nav flex-column">
-            </ul>
-            <form action="{{ url_for('Upload') }}" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="file">Upload Course Materials</label>
-                    <input type="file" name="file" id="file" class="form-control-file">
-                </div>
-                <button type="submit" class="btn btn-primary" id = "test" class = "test">Upload</button>
-            </form>
-        </div>
+    <div id="mySidebar" class="sidebar">
+        <h4 class="p-3">Courses</h4>
+        <ul id="course-list" class="nav flex-column">
+        </ul>
+        <form action="{{ url_for('Upload') }}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Upload Course Materials</label>
+                <input type="file" name="file" id="file" class="form-control-file">
+            </div>
+            <button type="submit" class="btn btn-primary" id="test" class="test">Upload</button>
+        </form>
+    </div>
 
-        <div class="right-panel">
-            <h4>User Statistics</h4>
-            <p>Your recent activity and performance metrics will be displayed here.</p>
-            <ul class="list-group">
-                <li class="list-group-item">Summaries Created: 10</li>
-                <li class="list-group-item">Questions Answered: 25</li>
-                <li class="list-group-item">Courses Enrolled: 4</li>
-            </ul>
-        </div>
+    <div id="right-panel" class="right-panel">
+        <h4>User Statistics</h4>
+        <p>Your recent activity and performance metrics will be displayed here.</p>
+        <ul class="list-group">
+            <li class="list-group-item">Summaries Created: 10</li>
+            <li class="list-group-item">Questions Answered: 25</li>
+            <li class="list-group-item">Courses Enrolled: 4</li>
+        </ul>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        function toggleNav() {
+            const sidebar = document.getElementById("mySidebar");
+            sidebar.classList.toggle('collapsed');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-        fetch('/api/courses')
-            .then(response => response.json())
-            .then(data => {
-                if (data.courses) {
-                    const courseList = document.getElementById('course-list');
-                    data.courses.forEach(course => {
-                        const li = document.createElement('li');
-                        li.className = 'nav-item';
-                        li.innerHTML = `<a href="/Course/${course.file_id}" class="nav-link">${course.filename}</a>`;
-                        courseList.appendChild(li);
-                    });
-                } else {
-                    console.error('Failed to load courses:', data.error);
-                }
-            })
-            .catch(error => console.error('Error fetching courses:', error));
+            fetch('/api/courses')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.courses) {
+                        const courseList = document.getElementById('course-list');
+                        data.courses.forEach(course => {
+                            const li = document.createElement('li');
+                            li.className = 'nav-item';
+                            li.innerHTML = `<a href="/Course/${course.file_id}" class="nav-link">${course.filename}</a>`;
+                            courseList.appendChild(li);
+                        });
+                    } else {
+                        console.error('Failed to load courses:', data.error);
+                    }
+                })
+                .catch(error => console.error('Error fetching courses:', error));
         });
     </script>
-    
 </body>
 </html>
