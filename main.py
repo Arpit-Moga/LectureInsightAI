@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from bson import ObjectId
 from gridfs import GridFS
 import os
-import AI
+import LectureInsightAI.ai_summarizer as ai_summarizer
 
 
 load_dotenv()
@@ -107,7 +107,7 @@ def view_course(course_id):
         note = users_collection.find_one({'username': username, 'courses.file_id': ObjectId(course_id)}, {'courses.$': 1})
         existing_note = note['courses'][0].get('note', None) if note else None
 
-        if request.method == 'POST' and 'generate_note' in request.form: existing_note = AI.AI_summarizer(fs,course_data)
+        if request.method == 'POST' and 'generate_note' in request.form: existing_note = ai_summarizer.AI_summary(fs,course_data)
 
         print(existing_note)
 
