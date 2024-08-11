@@ -53,7 +53,7 @@
     <div class="content">
         <div class="register-box">
             <h2>Create an Account</h2>
-            <form action="register_process.html" method="post">
+            <form action="{{ url_for('Register') }}" method="post">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
