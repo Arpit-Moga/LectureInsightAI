@@ -28,8 +28,12 @@
             padding: 20px;
             overflow-y: auto;
         }
+
         .navbar {
             margin-bottom: 1%; 
+        }
+        .form-group {
+            margin-top: 50%;
         }
     </style>
 </head>
@@ -44,14 +48,15 @@
     <div class="main-content">
         <div class="left-panel">
             <h4 class="p-3">Courses</h4>
-            <ul class="nav flex-column">
-                <li class="nav-item"><a href="#" class="nav-link">Course 1</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Course 2</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Course 3</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Course 4</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Course 5</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Course 6</a></li>
+            <ul id="course-list" class="nav flex-column">
             </ul>
+            <form action="{{ url_for('Upload') }}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file">Upload Course Materials</label>
+                    <input type="file" name="file" id="file" class="form-control-file">
+                </div>
+                <button type="submit" class="btn btn-primary" id = "test" class = "test">Upload</button>
+            </form>
         </div>
 
         <div class="right-panel">
@@ -68,5 +73,27 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/courses')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.courses) {
+                        const courseList = document.getElementById('course-list');
+                        data.courses.forEach(course => {
+                            const li = document.createElement('li');
+                            li.className = 'nav-item';
+                            li.innerHTML = `<a href="#" class="nav-link">${course.filename}</a>`;
+                            courseList.appendChild(li);
+                        });
+                    } else {
+                        console.error('Failed to load courses:', data.error);
+                    }
+                })
+                .catch(error => console.error('Error fetching courses:', error));
+        });
+    </script>
+    
+    
 </body>
 </html>
