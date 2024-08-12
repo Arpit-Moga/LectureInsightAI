@@ -21,27 +21,26 @@
         }
 
         .sidebar {
-            height: calc(100% - 56px); /* Adjust height to be below the navbar */
-            width: 250px; /* Fixed width for sidebar */
+            height: calc(100% - 56px); 
             position: fixed;
-            top: 56px; /* Positioning it below the navbar */
+            top: 56px; 
             left: 0;
             background-color: #f8f9fa;
             border-right: 1px solid #ddd;
             overflow-y: auto;
-            transition: width 0s; /* Instant transition */
+            transition: width 0s; 
             padding-top: 20px;
-            z-index: 900; /* Ensure the sidebar is behind the toggle button */
+            z-index: 900; 
         }
 
         .sidebar.collapsed {
-            width: 0; /* Collapse the sidebar */
+            width: 0; 
         }
 
         .sidebar a {
             padding: 8px 8px 8px 32px;
             text-decoration: none;
-            font-size: 18px; /* Decreased font size */
+            font-size: 18px; 
             color: #333;
             display: block;
         }
@@ -60,7 +59,7 @@
             border-radius: 4px;
             position: relative;
             top: 8%;
-            left: 260px; /* Positioning it just outside the sidebar */
+            left: 260px; 
             z-index: 1001; 
         }
 
@@ -71,7 +70,7 @@
         .right-panel {
             font-size: 120%;
             margin-top: 5%;
-            margin-left: 20%; /* Fixed margin-left to maintain position */
+            margin-left: 20%; 
             padding: 20px;
             max-width: 1100px;
             width: 100%;

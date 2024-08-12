@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from bson import ObjectId
 from gridfs import GridFS
 import os
-import ai_summarizer
+import ai_helper_script
 
 
 
@@ -106,16 +106,26 @@ def view_course(course_id):
 
         course_data = next(c for c in course['courses'] if c['file_id'] == ObjectId(course_id))
         note = users_collection.find_one({'username': username, 'courses.file_id': ObjectId(course_id)}, {'courses.$': 1})
-        existing_note = note['courses'][0].get('note', None) if note else None
+        summary = note['courses'][0].get('note', None) if note else None
+        key_points = note['courses'][0].get('key_points', None) if note else None
 
-        if request.method == 'POST' and 'generate_note' in request.form: existing_note = ai_summarizer.AI_summary(fs,course_data)
+        if request.method == 'POST' and 'generate_note' in request.form: 
+            summary = ai_helper_script.AI_summary(fs,course_data)
+            key_points = ai_helper_script.AI_key_points(summary)
 
         users_collection.update_one(
             {'username': username, 'courses.file_id': ObjectId(course_id)},
-            {'$set': {'courses.$.note': existing_note}}
+                {
+                    '$set': {
+                        'courses.$.note': summary,
+                        'courses.$.key_points': key_points
+                    }
+                }
         )
 
-        return render_template('Course_Detail.html', course=course_data , summary=existing_note)
+        print(key_points)
+
+        return render_template('Course_Detail.html', course=course_data , summary=summary , key_points=key_points)
     
     return jsonify({'error': 'User not found'}), 404
 

@@ -21,27 +21,27 @@
         }
 
         .sidebar {
-            height: calc(100% - 56px); /* Adjust height to be below the navbar */
-            width: 250px; /* Fixed width for sidebar */
+            height: calc(100% - 56px);
+            width: 250px;
             position: fixed;
-            top: 56px; /* Positioning it below the navbar */
+            top: 56px;
             left: 0;
             background-color: #f8f9fa;
             border-right: 1px solid #ddd;
             overflow-y: auto;
-            transition: width 0s; /* Instant transition */
+            transition: width 0s;
             padding-top: 20px;
-            z-index: 900; /* Ensure the sidebar is behind the toggle button */
+            z-index: 900;
         }
 
         .sidebar.collapsed {
-            width: 0; /* Collapse the sidebar */
+            width: 0;
         }
 
         .sidebar a {
             padding: 8px 8px 8px 32px;
             text-decoration: none;
-            font-size: 18px; /* Decreased font size */
+            font-size: 18px;
             color: #333;
             display: block;
         }
@@ -60,8 +60,8 @@
             border-radius: 4px;
             position: relative;
             top: 8%;
-            left: 260px; /* Positioning it just outside the sidebar */
-            z-index: 1001; 
+            left: 260px;
+            z-index: 1001;
         }
 
         .toggle-btn:hover {
@@ -71,7 +71,7 @@
         .right-panel {
             font-size: 120%;
             margin-top: 5%;
-            margin-left: 20%; /* Fixed margin-left to maintain position */
+            margin-left: 20%;
             padding: 20px;
             max-width: 1100px;
             width: 100%;
@@ -97,8 +97,37 @@
             <h2>Course: {{ course.filename }}</h2>
 
             {% if summary %}
-                <h3>Summary</h3>
-                <p>{{ summary }}</p>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-primary active">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked onclick="showSummary()"> Full Summary
+                    </label>
+                    <label class="btn btn-outline-primary">
+                        <input type="radio" name="options" id="option2" autocomplete="off" onclick="showKeyPoints()"> Key Points
+                    </label>
+                </div>
+
+                <div id="summary" style="margin-top: 20px;">
+                    <h3>Summary</h3>
+                    <p>{{ summary }}</p>
+                </div>
+
+                <div id="key_points" style="margin-top: 20px; display: none;">
+                    <h3>Key Points</h3>
+                    <ul>
+                        {% for heading, content in key_points.items() %}
+                            <li>
+                                <strong>{{ heading }}</strong>:
+                                    <ul>
+                                    {% for sentence in content %}
+                                        <li>{{ sentence }}</li>
+                                    {% endfor %}
+                                    </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+
                 <form method="POST">
                     <button type="submit" name="generate_note" class="btn btn-primary">Generate Another Note</button>
                 </form>
@@ -108,7 +137,7 @@
                     <button type="submit" name="generate_note" class="btn btn-primary">Generate Note</button>
                 </form>
             {% endif %}
-            
+
             <a href="{{ url_for('Home') }}" class="btn btn-secondary mt-3">Back to Courses</a>
         </div>
     </div>
@@ -120,6 +149,16 @@
         function toggleNav() {
             const sidebar = document.getElementById("mySidebar");
             sidebar.classList.toggle('collapsed');
+        }
+
+        function showSummary() {
+            document.getElementById('summary').style.display = 'block';
+            document.getElementById('key_points').style.display = 'none';
+        }
+
+        function showKeyPoints() {
+            document.getElementById('summary').style.display = 'none';
+            document.getElementById('key_points').style.display = 'block';
         }
 
         document.addEventListener('DOMContentLoaded', function() {
